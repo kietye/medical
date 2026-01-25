@@ -1,0 +1,34 @@
+# Generated files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Models (large files)
+models/sam/*.pth
+
+# Data (optional, may contain sensitive medical images)
+# data/raw/
+# data/annotated/
+data/embeddings/
+
+# Output
+output/
+results/
+*.log

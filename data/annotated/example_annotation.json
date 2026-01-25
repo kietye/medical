@@ -1,0 +1,13 @@
+{
+  "image_id": "example_001",
+  "image_path": "data/raw/example_001.jpg",
+  "expert_annotation": {
+    "diagnosis": "子宫内膜息肉",
+    "features": ["局灶性隆起", "表面光滑", "血管网可见"],
+    "biopsy_region": "息肉根部",
+    "pathology_result": "子宫内膜息肉，无不典型增生",
+    "difficulty_level": "easy"
+  },
+  "annotator": "专家医生",
+  "annotated_at": "2026-01-25"
+}
