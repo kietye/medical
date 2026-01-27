@@ -46,7 +46,7 @@ class BiopsyNavigationPipeline:
     
     def __init__(
         self,
-        use_sam: bool = True,
+        use_sam: bool = None,
         use_rag: bool = False,
         use_cot: bool = False
     ):
@@ -54,15 +54,16 @@ class BiopsyNavigationPipeline:
         初始化流程
         
         Args:
-            use_sam: 是否使用 SAM 分割
+            use_sam: 是否使用 SAM 分割 (默认读取 config.SAM_ENABLED)
             use_rag: 是否使用 Visual RAG
             use_cot: 是否使用 Chain-of-Thought
         """
-        self.use_sam = use_sam
+        # 如果未指定，从配置读取
+        self.use_sam = use_sam if use_sam is not None else config.SAM_ENABLED
         self.use_rag = use_rag
         self.use_cot = use_cot
         
-        self.sam_processor = SAMProcessor() if use_sam else None
+        self.sam_processor = SAMProcessor() if self.use_sam else None
         self.llm_client = LLMClient()
         self.visual_rag = None
         
@@ -93,7 +94,7 @@ class BiopsyNavigationPipeline:
         
         console.print(Panel(f"[bold blue]处理图像: {image_path.name}[/bold blue]"))
         
-        # Step 1: SAM 分割
+        # Step 1: SAM 分割 (可选)
         regions = []
         marked_image_path = ""
         
@@ -214,13 +215,22 @@ def main():
     parser.add_argument("--image", "-i", required=True, help="输入图像路径")
     parser.add_argument("--output", "-o", default=None, help="输出目录")
     parser.add_argument("--no-sam", action="store_true", help="禁用 SAM 分割")
+    parser.add_argument("--sam", action="store_true", help="强制启用 SAM 分割 (覆盖 .env 配置)")
     parser.add_argument("--rag", action="store_true", help="启用 Visual RAG")
     parser.add_argument("--cot", action="store_true", help="启用 Chain-of-Thought")
     
     args = parser.parse_args()
     
+    # 处理 SAM 开关逻辑：命令行参数优先于配置文件
+    if args.no_sam:
+        use_sam = False
+    elif args.sam:
+        use_sam = True
+    else:
+        use_sam = None  # 使用 config.SAM_ENABLED
+    
     pipeline = BiopsyNavigationPipeline(
-        use_sam=not args.no_sam,
+        use_sam=use_sam,
         use_rag=args.rag,
         use_cot=args.cot
     )

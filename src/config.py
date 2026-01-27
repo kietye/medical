@@ -38,6 +38,7 @@ class Config:
     
     # 模型配置
     DEFAULT_MODEL: str = os.getenv("DEFAULT_MODEL", "qwen-vl-max")
+    SAM_ENABLED: bool = os.getenv("SAM_ENABLED", "true").lower() in ("true", "1", "yes")
     SAM_MODEL_TYPE: str = os.getenv("SAM_MODEL_TYPE", "vit_h")
     
     # SAM 模型权重文件名映射

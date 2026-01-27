@@ -10,21 +10,46 @@
 
 ## 快速开始
 
+1. **环境准备 (推荐使用虚拟环境)**
+
 ```bash
-# 1. 安装依赖
+# 创建虚拟环境 (若尚未创建)
+python -m venv .venv
+
+# 激活虚拟环境 (Windows)
+.\.venv\Scripts\activate
+
+# 激活虚拟环境 (Linux/macOS)
+# source .venv/bin/activate
+```
+
+2. **安装依赖**
+
+```bash
 pip install -r requirements.txt
+```
+3. **下载 SAM 模型**
 
-# 2. 下载 SAM 模型
+```bash
 python scripts/download_sam.py
+```
 
-# 3. 配置 API
+4. **配置 API**
+
+```bash
 cp .env.example .env
 # 编辑 .env 填入 API Key
+```
 
-# 4. 运行测试
+5. **运行测试**
+
+```bash
 python scripts/test_api.py
+```
 
-# 5. 运行示例
+6. **运行示例**
+
+```bash
 python -m src.pipeline --image data/raw/example.jpg
 ```
 
