@@ -47,7 +47,7 @@ class BiopsyNavigationPipeline:
     def __init__(
         self,
         use_sam: bool = None,
-        use_rag: bool = False,
+        use_rag: bool = None,
         use_cot: bool = False
     ):
         """
@@ -55,19 +55,19 @@ class BiopsyNavigationPipeline:
         
         Args:
             use_sam: 是否使用 SAM 分割 (默认读取 config.SAM_ENABLED)
-            use_rag: 是否使用 Visual RAG
+            use_rag: 是否使用 Visual RAG (默认读取 config.RAG_ENABLED)
             use_cot: 是否使用 Chain-of-Thought
         """
         # 如果未指定，从配置读取
         self.use_sam = use_sam if use_sam is not None else config.SAM_ENABLED
-        self.use_rag = use_rag
+        self.use_rag = use_rag if use_rag is not None else config.RAG_ENABLED
         self.use_cot = use_cot
         
         self.sam_processor = SAMProcessor() if self.use_sam else None
         self.llm_client = LLMClient()
         self.visual_rag = None
         
-        if use_rag:
+        if self.use_rag:
             self.visual_rag = VisualRAG()
             self.visual_rag.load_index()
     
@@ -216,7 +216,8 @@ def main():
     parser.add_argument("--output", "-o", default=None, help="输出目录")
     parser.add_argument("--no-sam", action="store_true", help="禁用 SAM 分割")
     parser.add_argument("--sam", action="store_true", help="强制启用 SAM 分割 (覆盖 .env 配置)")
-    parser.add_argument("--rag", action="store_true", help="启用 Visual RAG")
+    parser.add_argument("--no-rag", action="store_true", help="禁用 Visual RAG")
+    parser.add_argument("--rag", action="store_true", help="强制启用 Visual RAG (覆盖 .env 配置)")
     parser.add_argument("--cot", action="store_true", help="启用 Chain-of-Thought")
     
     args = parser.parse_args()
@@ -229,9 +230,17 @@ def main():
     else:
         use_sam = None  # 使用 config.SAM_ENABLED
     
+    # 处理 RAG 开关逻辑：命令行参数优先于配置文件
+    if args.no_rag:
+        use_rag = False
+    elif args.rag:
+        use_rag = True
+    else:
+        use_rag = None  # 使用 config.RAG_ENABLED
+    
     pipeline = BiopsyNavigationPipeline(
         use_sam=use_sam,
-        use_rag=args.rag,
+        use_rag=use_rag,
         use_cot=args.cot
     )
     

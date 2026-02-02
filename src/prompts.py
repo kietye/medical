@@ -98,7 +98,7 @@ def get_rag_prompt(reference_cases: list[dict], use_cot: bool = False) -> str:
     生成 RAG 增强的 Prompt
     
     Args:
-        reference_cases: 参考病例列表，每个元素包含 diagnosis, features, biopsy_region 等
+        reference_cases: 参考病例列表，每个元素包含 diagnosis, features, biopsy_region, similarity 等
         use_cot: 是否使用 Chain-of-Thought
         
     Returns:
@@ -107,8 +107,9 @@ def get_rag_prompt(reference_cases: list[dict], use_cot: bool = False) -> str:
     # 格式化参考病例
     cases_text = ""
     for i, case in enumerate(reference_cases, 1):
+        similarity = case.get('similarity', '未知')
         cases_text += f"""
-### 参考病例 {i}
+### 参考病例 {i} (相似度: {similarity})
 - **诊断**: {case.get('diagnosis', '未知')}
 - **关键特征**: {case.get('features', '未描述')}
 - **活检位置**: {case.get('biopsy_region', '未标注')}

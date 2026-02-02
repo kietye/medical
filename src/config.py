@@ -23,6 +23,12 @@ class Config:
     RAW_DIR: Path = DATA_DIR / "raw"
     ANNOTATED_DIR: Path = DATA_DIR / "annotated"
     EMBEDDINGS_DIR: Path = DATA_DIR / "embeddings"
+    RAG_DATA_DIR: Path = DATA_DIR / "rag_data"
+    TEST_DATA_DIR: Path = DATA_DIR / "test_data"
+    
+    # 测试配置
+    TEST_SPLIT_RATIO: float = 0.2  # 20% 作为测试集
+    RANDOM_SEED: int = 42  # 可复现的随机种子
     
     # 模型目录
     MODELS_DIR: Path = ROOT_DIR / "models"
@@ -40,6 +46,7 @@ class Config:
     DEFAULT_MODEL: str = os.getenv("DEFAULT_MODEL", "qwen-vl-max")
     SAM_ENABLED: bool = os.getenv("SAM_ENABLED", "true").lower() in ("true", "1", "yes")
     SAM_MODEL_TYPE: str = os.getenv("SAM_MODEL_TYPE", "vit_h")
+    RAG_ENABLED: bool = os.getenv("RAG_ENABLED", "false").lower() in ("true", "1", "yes")
     
     # SAM 模型权重文件名映射
     SAM_CHECKPOINTS: dict = None

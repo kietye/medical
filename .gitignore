@@ -27,6 +27,9 @@ models/sam/*.pth
 # data/raw/
 # data/annotated/
 data/embeddings/
+data/rag_data/
+data/test/
+data/test_data/
 
 # Output
 output/
