@@ -175,6 +175,9 @@ python scripts/test_pipeline_accuracy.py
 
 # 启用 RAG + CoT
 python scripts/test_pipeline_accuracy.py --rag --cot --limit 3
+
+# 启用 CoT
+python scripts/test_pipeline_accuracy.py --no-rag --cot --limit 3
 ```
 
 ---
